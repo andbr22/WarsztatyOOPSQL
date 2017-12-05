@@ -131,7 +131,8 @@ public class Solution {
 			preparedStatement.setInt(2, this.excercise_id);
 			preparedStatement.setInt(3, this.user_id);
 			preparedStatement.setDate(4, new java.sql.Date(this.created.getTime()));
-			preparedStatement.setDate(5, new java.sql.Date(this.updated.getTime()));
+			if(this.updated == null)preparedStatement.setDate(5, null);
+			else preparedStatement.setDate(5, new java.sql.Date(this.updated.getTime()));
 			preparedStatement.executeUpdate();
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			if (rs.next()) {
@@ -145,7 +146,8 @@ public class Solution {
 			preparedStatement.setInt(2, this.excercise_id);
 			preparedStatement.setInt(3, this.user_id);
 			preparedStatement.setDate(4, new java.sql.Date(this.created.getTime()));
-			preparedStatement.setDate(5, new java.sql.Date(this.updated.getTime()));
+			if(this.updated == null)preparedStatement.setDate(5, null);
+			else preparedStatement.setDate(5, new java.sql.Date(this.updated.getTime()));
 			preparedStatement.setInt(6, this.id);
 			preparedStatement.executeUpdate();
 		}
@@ -195,6 +197,27 @@ public class Solution {
 		return sArray;
 	}
 	
+	public static Solution[] loadUnUpdatedByUserId(Connection con, int id) throws SQLException{
+		ArrayList<Solution> solutions = new ArrayList<Solution>();
+		String query = "SELECT * FROM solutions WHERE updated is null AND user_id= ?";
+		PreparedStatement ps;
+		ps = con.prepareStatement(query);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			Solution loaded = new Solution();
+			loaded.id = rs.getInt("id");
+			loaded.excercise_id = rs.getInt("excercise_id");
+			loaded.user_id = rs.getInt("user_id");
+			loaded.description = rs.getString("description");
+			loaded.created = rs.getDate("created");
+			loaded.updated = rs.getDate("updated");
+			solutions.add(loaded);
+		}
+		Solution[] sArray = new Solution[solutions.size()];
+		sArray = solutions.toArray(sArray);
+		return sArray;
+	}
 	//***END Metody***
 	//****************
 	@Override

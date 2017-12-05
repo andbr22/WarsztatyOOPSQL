@@ -40,7 +40,7 @@ public class admin4 {
 						sol.setExcercise_id(Integer.parseInt(br.readLine()));
 						
 						sol.setCreated(new java.util.Date());
-						sol.setUpdated(new java.util.Date());
+						sol.setUpdated(null);
 						sol.setDescription("");
 						
 						sol.saveToDB(Connector.getConnection());
@@ -66,6 +66,7 @@ public class admin4 {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Cośtam");
 		}
 

@@ -30,12 +30,14 @@ public class user1 {
 					System.out.println("x - wyjdź z programu");
 					action = br.readLine();
 					if (action.equals("a")) {
-						
+						for(Solution sol2 : Solution.loadUnUpdatedByUserId(Connector.getConnection(), userId)){
+							System.out.println(sol2);
+						}
 						
 						System.out.println("Podaj id Zadania");
 						int eId = Integer.parseInt(br.readLine());
 						Solution sol = Solution.loadSolutionById(Connector.getConnection(), eId);
-							if(sol.getUser_id() == userId){
+							if(sol.getUser_id() == userId && sol.getUpdated()==null){
 								System.out.println("Dodaj opis zadania");
 								sol.setDescription(br.readLine());
 								sol.setUpdated(new java.util.Date());
